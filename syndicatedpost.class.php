@@ -411,20 +411,20 @@ class SyndicatedPost {
 		# If that's what happened, we don't want the full
 		# content for the excerpt.
 		$content = $this->content();
-
+                $content = html_entity_decode($content);
 		// Ignore whitespace, case, and tag cruft.
 		$theExcerpt = preg_replace('/\s+/', '', strtolower(strip_tags($excerpt)));
 		$theContent = preg_replace('/\s+/', '', strtolower(strip_tags($content)));
 
-		if ( empty($excerpt) or $theExcerpt == $theContent ) :
+		//if ( empty($excerpt) or $theExcerpt == $theContent ) :
 			# If content is available, generate an excerpt.
 			if ( strlen(trim($content)) > 0 ) :
 				$excerpt = strip_tags($content);
 				if (strlen($excerpt) > 255) :
-					$excerpt = substr($excerpt,0,252).'...';
+					$excerpt = mb_substr($excerpt,0,252).'...';
 				endif;
 			endif;
-		endif;
+		//endif;
 		return $excerpt;
 	} /* SyndicatedPost::excerpt() */
 
@@ -829,13 +829,13 @@ class SyndicatedPost {
 					$cats,
 					preg_split(
 						$pcre,
-						$cat_name,
+						html_entity_decode($cat_name),
 						-1 /*=no limit*/,
 						PREG_SPLIT_NO_EMPTY
 					)
 				);
 			else :
-				$cats[] = $cat_name;
+				$cats[] = html_entity_decode($cat_name);
 			endif;
 		endforeach; endif;
 
